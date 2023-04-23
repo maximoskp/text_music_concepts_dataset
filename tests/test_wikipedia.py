@@ -14,6 +14,8 @@ import keras_nlp
 
 import wikipedia as wp
 
+import numpy as np
+
 # %% get a list of search results
 search_result = wp.search('major scale')
 
@@ -30,7 +32,7 @@ vocab_file = keras.utils.get_file(
 )
 
 # %% make constants
-SEQ_LENGTH = 128
+SEQ_LENGTH = 512
 
 # %% make tokenizer
 tokenizer = keras_nlp.tokenizers.WordPieceTokenizer(
@@ -39,3 +41,11 @@ tokenizer = keras_nlp.tokenizers.WordPieceTokenizer(
     lowercase=True,
     strip_accents=True,
 )
+# %% tokenize a random part of the page content
+random_part = page_content[ np.random.randint( len(page_content)-SEQ_LENGTH ): ]
+t = tokenizer.tokenize( random_part )
+# detokenize to examine
+d = tokenizer.detokenize( t )
+s = d.numpy().decode('utf-8')
+print(s)
+print(len(s.split(' ')))
